@@ -5,10 +5,11 @@ import 'package:slate/src/core/theme/app_theme.dart';
 import 'package:slate/src/data/model/account.dart';
 import 'package:slate/src/data/model/expense.dart';
 import 'package:slate/src/data/model/income.dart';
-import 'package:slate/src/features/screens/slate_style_guide.dart';
 import 'package:slate/src/provider/account_provider.dart';
 import 'package:slate/src/provider/expense_provider.dart';
 import 'package:slate/src/provider/income_provider.dart';
+import 'package:slate/src/routes/app_pages.dart';
+import 'package:slate/src/routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
-        home: SlateStyleGuide(),
+        initialRoute: AppRoutes.home,
+        routes: AppPages.routes,
       ),
     );
   }
