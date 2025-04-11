@@ -40,10 +40,14 @@ class AccountsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final responsivePadding = padding ?? EdgeInsets.all(screenWidth * 0.06);
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+    final screenHeight = mediaQuery.size.height;
+    final sizeFactor = (screenWidth * screenHeight) / (360 * 640);
+    final adaptiveFactor = sizeFactor.clamp(0.8, 1.2);
+    final responsivePadding = padding ?? EdgeInsets.all(16.0 * adaptiveFactor);
     final outerPadding = EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.015, vertical: screenWidth * 0.030);
+        horizontal: 6.0 * adaptiveFactor, vertical: 12.0 * adaptiveFactor);
     final currentDropdownValue = dropdownValue ??
         (dropdownItems.isNotEmpty ? dropdownItems.first : null);
 
@@ -64,9 +68,10 @@ class AccountsCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeader(screenWidth, currentDropdownValue),
-                SizedBox(height: screenWidth * 0.05),
-                _buildBalance(screenWidth),
+                _buildHeader(context, adaptiveFactor, currentDropdownValue),
+                SizedBox(height: 16.0 * adaptiveFactor),
+                _buildBalance(context, adaptiveFactor),
+                SizedBox(height: 20.0 * adaptiveFactor),
               ],
             ),
           ),
@@ -81,14 +86,15 @@ class AccountsCard extends StatelessWidget {
                 bottomRight: Radius.circular(_defaultBorderRadius),
               ),
             ),
-            child: _buildExpenseSection(screenWidth),
+            child: _buildExpenseSection(context, adaptiveFactor),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildHeader(double screenWidth, String? currentDropdownValue) {
+  Widget _buildHeader(BuildContext context, double adaptiveFactor,
+      String? currentDropdownValue) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -96,7 +102,7 @@ class AccountsCard extends StatelessWidget {
           child: Text(
             balanceTitle,
             style: AppTextStyles.bodyMedium.copyWith(
-              fontSize: screenWidth * 0.04,
+              fontSize: 14.0 * adaptiveFactor,
               color: AppColors.textSecondary,
             ),
           ),
@@ -105,15 +111,18 @@ class AccountsCard extends StatelessWidget {
           DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: currentDropdownValue,
-              icon: const Icon(Icons.keyboard_arrow_down,
-                  color: AppColors.textSecondary),
+              icon: Icon(
+                Icons.keyboard_arrow_down,
+                color: AppColors.textSecondary,
+                size: 20.0 * adaptiveFactor,
+              ),
               items: dropdownItems.map((String item) {
                 return DropdownMenuItem<String>(
                   value: item,
                   child: Text(
                     item,
                     style: AppTextStyles.bodySmall.copyWith(
-                      fontSize: screenWidth * 0.035,
+                      fontSize: 12.0 * adaptiveFactor,
                       color: AppColors.textPrimary,
                     ),
                   ),
@@ -128,7 +137,7 @@ class AccountsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBalance(double screenWidth) {
+  Widget _buildBalance(BuildContext context, double adaptiveFactor) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -136,17 +145,17 @@ class AccountsCard extends StatelessWidget {
           child: Text(
             balanceAmount,
             style: AppTextStyles.currencyLarge.copyWith(
-              fontSize: screenWidth * 0.090,
+              fontSize: 24.0 * adaptiveFactor,
             ),
           ),
         ),
-        SizedBox(width: screenWidth * 0.02),
-        _buildChangePercentage(screenWidth),
+        SizedBox(width: 8.0 * adaptiveFactor),
+        _buildChangePercentage(context, adaptiveFactor),
       ],
     );
   }
 
-  Widget _buildChangePercentage(double screenWidth) {
+  Widget _buildChangePercentage(BuildContext context, double adaptiveFactor) {
     final isPositive = balanceChangePercentage >= 0;
     final color = isPositive
         ? AppColors.positiveChangeColor
@@ -156,8 +165,8 @@ class AccountsCard extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.015,
-        vertical: screenWidth * 0.005,
+        horizontal: 6.0 * adaptiveFactor,
+        vertical: 2.0 * adaptiveFactor,
       ),
       decoration: BoxDecoration(
         color: color.withOpacity(0.2),
@@ -166,12 +175,12 @@ class AccountsCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: screenWidth * 0.03, color: color),
-          SizedBox(width: screenWidth * 0.01),
+          Icon(icon, size: 12.0 * adaptiveFactor, color: color),
+          SizedBox(width: 3.0 * adaptiveFactor),
           Text(
             '$prefix${balanceChangePercentage.toStringAsFixed(2)}%',
             style: AppTextStyles.bodySmall.copyWith(
-              fontSize: screenWidth * 0.03,
+              fontSize: 10.0 * adaptiveFactor,
               color: color,
               fontWeight: FontWeight.w600,
             ),
@@ -181,24 +190,26 @@ class AccountsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildExpenseSection(double screenWidth) {
+  Widget _buildExpenseSection(BuildContext context, double adaptiveFactor) {
     return Row(
       children: [
         Expanded(
           child: _buildExpenseItem(
+            context: context,
             title: 'Today\'s Expense',
             amount: todayExpenseAmount,
             percentage: todayExpensePercentage,
-            screenWidth: screenWidth,
+            adaptiveFactor: adaptiveFactor,
           ),
         ),
-        SizedBox(width: screenWidth * 0.08),
+        SizedBox(width: 24.0 * adaptiveFactor),
         Expanded(
           child: _buildExpenseItem(
+            context: context,
             title: 'Weekly Expense',
             amount: weeklyExpenseAmount,
             percentage: weeklyExpensePercentage,
-            screenWidth: screenWidth,
+            adaptiveFactor: adaptiveFactor,
           ),
         ),
       ],
@@ -206,10 +217,11 @@ class AccountsCard extends StatelessWidget {
   }
 
   Widget _buildExpenseItem({
+    required BuildContext context,
     required String title,
     required String amount,
     required double percentage,
-    required double screenWidth,
+    required double adaptiveFactor,
   }) {
     final isPositive = percentage >= 0;
     final color = isPositive
@@ -223,28 +235,28 @@ class AccountsCard extends StatelessWidget {
         Text(
           title,
           style: AppTextStyles.bodySmall.copyWith(
-            fontSize: screenWidth * 0.03,
+            fontSize: 11.0 * adaptiveFactor,
           ),
         ),
-        SizedBox(height: screenWidth * 0.02),
+        SizedBox(height: 6.0 * adaptiveFactor),
         Row(
           children: [
             Text(
               amount,
               style: AppTextStyles.bodyMedium.copyWith(
-                fontSize: screenWidth * 0.04,
+                fontSize: 14.0 * adaptiveFactor,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(width: screenWidth * 0.015),
+            SizedBox(width: 4.0 * adaptiveFactor),
             Row(
               children: [
-                Icon(icon, size: screenWidth * 0.025, color: color),
+                Icon(icon, size: 10.0 * adaptiveFactor, color: color),
                 SizedBox(width: 1.0),
                 Text(
                   '${percentage.abs().toStringAsFixed(1)}%',
                   style: AppTextStyles.bodySmall.copyWith(
-                    fontSize: screenWidth * 0.025,
+                    fontSize: 9.0 * adaptiveFactor,
                     color: color,
                     fontWeight: FontWeight.w600,
                   ),

@@ -12,9 +12,9 @@ class SlateAppBar extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final avatarRadius = screenWidth * 0.07;
-    final iconCircleRadius = screenWidth * 0.06;
-    final iconSize = screenWidth * 0.06;
+    final avatarRadius = screenWidth * 0.05;
+    final iconCircleRadius = screenWidth * 0.05;
+    final iconSize = screenWidth * 0.05;
 
     return Padding(
       padding: EdgeInsets.symmetric(
