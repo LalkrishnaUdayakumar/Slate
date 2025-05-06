@@ -5,7 +5,7 @@ import 'package:slate/src/core/constants/app_colors.dart';
 import 'package:slate/src/core/constants/app_text_styles.dart';
 
 class AccountsCard extends StatelessWidget {
-  static const double _defaultBorderRadius = 25.0;
+  static const double _defaultBorderRadius = 8.0;
   static const List<String> _defaultDropdownItems = ['All account'];
 
   // Required and optional parameters
