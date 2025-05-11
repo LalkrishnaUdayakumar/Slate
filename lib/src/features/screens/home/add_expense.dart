@@ -58,8 +58,6 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
   final TextEditingController _toWhoController = TextEditingController();
   String? _imagePath;
 
-  // List of people to split with (in a real app, this would come from contacts or friends list)
-
   void _saveExpense() {
     // Validate input
     if (_amountController.text.isEmpty || _descriptionController.text.isEmpty) {
@@ -131,7 +129,6 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                // ignore: deprecated_member_use
                 color: Colors.purpleAccent.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -146,122 +143,82 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Amount Field
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E1E1E),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    const Text(
-                      '₹',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TextField(
-                        controller: _amountController,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 20),
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          hintText: '0',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2A2A2A),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(Icons.qr_code_scanner,
-                          color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Description Field
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E1E1E),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextField(
-                  controller: _descriptionController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    hintText: 'Description (e.g. Pizza Margherita)',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Other Details Dropdown
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E1E1E),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _showOtherDetails = !_showOtherDetails;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Other details',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      const Spacer(),
-                      Icon(
-                        _showOtherDetails
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              if (_showOtherDetails) ...[
-                const SizedBox(height: 16),
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1E1E1E),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.all(16),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Main scrollable content
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Date Picker
-                      InkWell(
-                        onTap: () => _selectDate(context),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                      // Amount Field
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E1E),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: [
+                            const Text(
+                              '₹',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: TextField(
+                                controller: _amountController,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  hintText: '0',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Description Field
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E1E),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: TextField(
+                          controller: _descriptionController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            hintText: 'Description (e.g. Pizza Margherita)',
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Other Details Dropdown
+
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E1E),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        child: InkWell(
+                          onTap: () => _selectDate(context),
                           child: Row(
                             children: [
                               const Icon(Icons.calendar_today,
@@ -276,11 +233,13 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
                           ),
                         ),
                       ),
-                      const Divider(color: Color(0xFF2A2A2A)),
-
-                      // Account Type
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                      const SizedBox(height: 16),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E1E),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
                           children: [
                             const Icon(Icons.account_balance_wallet,
@@ -316,11 +275,13 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
                           ],
                         ),
                       ),
-                      const Divider(color: Color(0xFF2A2A2A)),
-
-                      // Paid To
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                      const SizedBox(height: 16),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E1E),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
                           children: [
                             const Icon(Icons.person, color: Colors.white),
@@ -339,18 +300,22 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
                           ],
                         ),
                       ),
-                      const Divider(color: Color(0xFF2A2A2A)),
 
-                      // Add Image
-                      InkWell(
-                        onTap: () {
-                          // In a real app, this would open image picker
-                          setState(() {
-                            _imagePath = 'placeholder_image_path';
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                      const SizedBox(height: 16),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E1E),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        child: InkWell(
+                          onTap: () {
+                            // In a real app, this would open image picker
+                            setState(() {
+                              _imagePath = 'placeholder_image_path';
+                            });
+                          },
                           child: Row(
                             children: [
                               const Icon(Icons.camera_alt, color: Colors.white),
@@ -381,59 +346,75 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 16),
+
+                      // Categories
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: _categories.map((category) {
+                            final bool isSelected =
+                                _selectedCategory == category;
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedCategory = category;
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? Colors.green
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? Colors.green
+                                          : Colors.grey.shade700,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    category,
+                                    style: TextStyle(
+                                      color: isSelected
+                                          ? Colors.white
+                                          : getColorForCategory(category),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+
+                      // Add extra space at the bottom to ensure content doesn't get hidden behind the buttons
+                      const SizedBox(height: 80),
                     ],
                   ),
                 ),
-              ],
-
-              const SizedBox(height: 24),
-
-              // Categories
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal, // 🔹 enable horizontal scroll
-                child: Row(
-                  children: _categories.map((category) {
-                    final bool isSelected = _selectedCategory == category;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedCategory = category;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color:
-                                isSelected ? Colors.green : Colors.transparent,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: isSelected
-                                  ? Colors.green
-                                  : Colors.grey.shade700,
-                            ),
-                          ),
-                          child: Text(
-                            category,
-                            style: TextStyle(
-                              color: isSelected
-                                  ? Colors.white
-                                  : getColorForCategory(category),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
               ),
+            ),
 
-              const SizedBox(height: 24),
-
-              // Save and Cancel Buttons
-              Row(
+            // Fixed bottom buttons
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFF121212),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 5,
+                    offset: const Offset(0, -3),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
@@ -465,8 +446,8 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
