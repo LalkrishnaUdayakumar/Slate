@@ -19,8 +19,6 @@ class ExpenseDetails {
   final double amount;
   final String description;
   final String category;
-  final bool splitExpense;
-  final List<String> splitWith;
   final String? imagePath;
   final DateTime date;
   final String accountType;
@@ -30,8 +28,6 @@ class ExpenseDetails {
     required this.amount,
     required this.description,
     required this.category,
-    this.splitExpense = false,
-    this.splitWith = const [],
     this.imagePath,
     required this.date,
     required this.accountType,
@@ -52,7 +48,6 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
     'Shopping',
     'Entertainment'
   ];
-  bool _showOtherDetails = false;
   DateTime _selectedDate = DateTime.now();
   String _accountType = 'Cash';
   final TextEditingController _toWhoController = TextEditingController();
@@ -349,6 +344,37 @@ class _ExpenseEntryState extends State<ExpenseEntry> {
                       const SizedBox(height: 16),
 
                       // Categories
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E1E),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.category, color: Colors.white),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: TextField(
+                                controller: TextEditingController(
+                                    text: _selectedCategory),
+                                style: const TextStyle(color: Colors.white),
+                                decoration: const InputDecoration(
+                                  hintText: 'Category',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none,
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedCategory = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
